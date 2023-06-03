@@ -14,7 +14,7 @@
 # Quality
 
 # command to download a video file, default options
-# yt-dlp <url>
+# yt-dlp https://youtu.be/48fzJttqb4Q
 
 # command to download audio only as aac (m4a)
 # yt-dlp -x --audio-format aac <url>
@@ -25,6 +25,11 @@
 
 # command to download audio only and choose it's quality
 # yt-dlp -x --audio-format aac --audio-quality 0 <url>
+
+## Notes
+# variables that start with 'q_' are assigned by user input via 'read -rp'
+# menu option 1: add logic to check that the url is a proper url; make new branch for this
+# add prompt to ask if go back to main menu or quit after something runs and completes
 
 # clear screen
 clear
@@ -56,6 +61,9 @@ read_option() {
     read -rp "Option: " choice
     case $choice in
     1) # Get URL Info
+        read -rp "URL? " q_url
+        yt-dlp -F "$q_url"
+        echo ""
         ;;
     2) # Download...
         ;;
