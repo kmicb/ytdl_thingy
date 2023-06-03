@@ -43,44 +43,52 @@ menu_items=(
 
 # display the menu
 print_menu() {
-    max_width=0
-    for item in "${menu_items[@]}"; do
-        item_length=${#item}
-        if ((item_length > max_width)); then
-            max_width=$item_length
-        fi
-    done
     echo ""
     for item in "${menu_items[@]}"; do
-        printf "%-${max_width}s\n\n" "$item"
+        echo "$item"
+        echo ""
     done
+    echo ""
 }
 
 # case block
+# Function to read user option
 read_option() {
     read -rp "Option: " choice
+    echo ""
     case $choice in
     1) # Get URL Info
         while true; do
             read -rp "URL? " q_url
             regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
             if [[ "$q_url" =~ $regex ]]; then
+                echo ""
                 yt-dlp -F "$q_url"
+                echo ""
+                break
             else
+                echo ""
                 read -rp "Invalid URL. Try again? (y/n): " choice
+                echo ""
                 if [[ "$choice" == "n" ]]; then
                     echo "Aborting script."
+                    echo ""
                     exit 0
                 fi
             fi
         done
-        echo ""
         ;;
     2) # Download...
         ;;
     3) # TBD
         ;;
     *) # catch-all
+        echo "Invalid selection."
         ;;
     esac
 }
+
+print_menu
+echo ""
+read_option
+echo ""
