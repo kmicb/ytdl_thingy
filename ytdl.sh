@@ -40,6 +40,7 @@ menu_items=(
     "1. Get URL Info"
     "2. Download..."
     "3. TBD"
+    "9. Exit"
 )
 
 # functions
@@ -148,6 +149,9 @@ read_option() {
         fi
         ;;
     3) # TBD
+        ;;
+    9)  # Exit
+        exit 0
         ;;
     *) # catch-all
         echo "Invalid selection."
