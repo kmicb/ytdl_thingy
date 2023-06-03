@@ -47,9 +47,9 @@ is_url_valid() {
     local url="$1"
     local regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
     if [[ "$url" =~ $regex ]]; then
-        return 0  # URL is valid
+        return 0 # URL is valid
     else
-        return 1  # URL is invalid
+        return 1 # URL is invalid
     fi
 }
 
@@ -72,8 +72,8 @@ read_option() {
     1) # Get URL Info
         while true; do
             read -rp "URL? " q_url
-            regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
-            if [[ "$q_url" =~ $regex ]]; then
+            # regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
+            if is_url_valid "$q_url"; then
                 echo ""
                 yt-dlp -F "$q_url"
                 echo ""
@@ -82,7 +82,7 @@ read_option() {
                 echo ""
                 read -rp "Invalid URL. Try again? (y/n): " choice
                 echo ""
-                if [[ "$choice" == "n" ]]; then
+                if [[ "$choice" == [Nn]* ]]; then
                     echo "Aborting script."
                     echo ""
                     exit 0
@@ -91,10 +91,10 @@ read_option() {
         done
         read -rp "[M]ain Menu or [Q]uit: " choice
         echo ""
-        if [[ "$choice" == "M" || "$choice" == "m" ]]; then
+        if [[ "$choice" == [Mm]* ]]; then
             clear
-            print_menu
-        elif [[ "$choice" == "Q" || "$choice" == "q" ]]; then
+            # print_menu
+        elif [[ "$choice" == [Qq]* ]]; then
             echo "Aborting script."
             echo ""
             exit 0
@@ -106,20 +106,28 @@ read_option() {
     2) # Download...
         while true; do
             read -rp "URL? " q_url
-            echo ""
-            read -rp "Download video file as-is? (no special options) (y/n): " q_as_is
-            regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
-            if [[ "$q_url" =~ $regex ]] && [[ "$q_as_is" == [Yy]* ]]; then
+            if is_url_valid "$q_url"; then
                 echo ""
-                echo "Downloading video file as is..."
-                yt-dlp "$q_url"
+                read -rp "Download video file as-is? (no special options) (y/n): " q_as_is
                 echo ""
-                break
+                if [[ "$q_as_is" == [Yy]* ]]; then
+                    echo ""
+                    echo "Downloading video file as-is..."
+                    echo ""
+                    yt-dlp "$q_url"
+                    echo ""
+                    break
+                else
+                    echo "Hi"
+                    echo ""
+                    break
+                    # do something if q_as_is == [Nn]*
+                fi
             else
                 echo ""
                 read -rp "Invalid URL. Try again? (y/n): " choice
                 echo ""
-                if [[ "$choice" == "n" ]]; then
+                if [[ "$choice" == [Nn]* ]]; then
                     echo "Aborting script."
                     echo ""
                     exit 0
@@ -130,13 +138,12 @@ read_option() {
         echo ""
         if [[ "$choice" == [Mm]* ]]; then
             clear
-            print_menu
         elif [[ "$choice" == [Qq]* ]]; then
             echo "Aborting script."
             echo ""
             exit 0
         else
-            echo "Invalid choice. Going back to main menu."
+            echo "Invalid choice; going back to main menu."
             echo ""
         fi
         ;;
@@ -148,7 +155,9 @@ read_option() {
     esac
 }
 
-print_menu
-echo ""
-read_option
-echo ""
+while true; do
+    print_menu
+    echo ""
+    read_option
+    echo ""
+done
