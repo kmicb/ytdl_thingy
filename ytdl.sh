@@ -67,7 +67,7 @@ read_option() {
             if [[ "$q_url" =~ $regex ]]; then
                 yt-dlp -F "$q_url"
             else
-                reap -rp "Invalid URL. Try again? (y/n): " choice
+                read -rp "Invalid URL. Try again? (y/n): " choice
                 if [[ "$choice" == "n" ]]; then
                     echo "Aborting script."
                     exit 0
