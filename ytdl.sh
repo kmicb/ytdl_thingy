@@ -30,6 +30,7 @@
 # variables that start with 'q_' are assigned by user input via 'read -rp'
 # menu option 1: add logic to check that the url is a proper url; make new branch for this
 # add prompt to ask if go back to main menu or quit after something runs and completes
+# make checking url a function so you just call the function and not duplicate code
 
 # clear screen
 clear
@@ -40,6 +41,17 @@ menu_items=(
     "2. Download..."
     "3. TBD"
 )
+
+# functions
+is_url_valid() {
+    local url="$1"
+    local regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
+    if [[ "$url" =~ $regex ]]; then
+        return 0  # URL is valid
+    else
+        return 1  # URL is invalid
+    fi
+}
 
 # display the menu
 print_menu() {
@@ -92,6 +104,41 @@ read_option() {
         fi
         ;;
     2) # Download...
+        while true; do
+            read -rp "URL? " q_url
+            echo ""
+            read -rp "Download video file as-is? (no special options) (y/n): " q_as_is
+            regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
+            if [[ "$q_url" =~ $regex ]] && [[ "$q_as_is" == [Yy]* ]]; then
+                echo ""
+                echo "Downloading video file as is..."
+                yt-dlp "$q_url"
+                echo ""
+                break
+            else
+                echo ""
+                read -rp "Invalid URL. Try again? (y/n): " choice
+                echo ""
+                if [[ "$choice" == "n" ]]; then
+                    echo "Aborting script."
+                    echo ""
+                    exit 0
+                fi
+            fi
+        done
+        read -rp "[M]ain Menu or [Q]uit: " choice
+        echo ""
+        if [[ "$choice" == [Mm]* ]]; then
+            clear
+            print_menu
+        elif [[ "$choice" == [Qq]* ]]; then
+            echo "Aborting script."
+            echo ""
+            exit 0
+        else
+            echo "Invalid choice. Going back to main menu."
+            echo ""
+        fi
         ;;
     3) # TBD
         ;;
