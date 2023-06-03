@@ -33,6 +33,15 @@
 # if they want to download the video as is, do that part
 # add code to else block if q_as_is == [Nn]*
 
+# Download
+    # Download audio only? y/n
+    # Y: Download as-is?
+            # Y: Download
+            # N: Format? > Quality? > Download
+    # N: Download video as-is?
+            # Y: Download
+            # N: Video format? > Download
+
 # clear screen
 clear
 
