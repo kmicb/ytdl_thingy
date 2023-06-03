@@ -28,9 +28,10 @@
 
 ## Notes
 # variables that start with 'q_' are assigned by user input via 'read -rp'
-# menu option 1: add logic to check that the url is a proper url; make new branch for this
-# add prompt to ask if go back to main menu or quit after something runs and completes
-# make checking url a function so you just call the function and not duplicate code
+# opt02 should ask if they want to download the video file as is or just extract the audio \
+# and if they want just the audio, prompt for which format and what quality to download it \
+# if they want to download the video as is, do that part
+# add code to else block if q_as_is == [Nn]*
 
 # clear screen
 clear
