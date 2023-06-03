@@ -61,8 +61,19 @@ read_option() {
     read -rp "Option: " choice
     case $choice in
     1) # Get URL Info
-        read -rp "URL? " q_url
-        yt-dlp -F "$q_url"
+        while true; do
+            read -rp "URL? " q_url
+            regex="^(https?|ftp)://[^\s/$.?#].[^\s]*$"
+            if [[ "$q_url" =~ $regex ]]; then
+                yt-dlp -F "$q_url"
+            else
+                reap -rp "Invalid URL. Try again? (y/n): " choice
+                if [[ "$choice" == "n" ]]; then
+                    echo "Aborting script."
+                    exit 0
+                fi
+            fi
+        done
         echo ""
         ;;
     2) # Download...
