@@ -77,6 +77,19 @@ read_option() {
                 fi
             fi
         done
+        read -rp "[M]ain Menu or [Q]uit: " choice
+        echo ""
+        if [[ "$choice" == "M" || "$choice" == "m" ]]; then
+            clear
+            print_menu
+        elif [[ "$choice" == "Q" || "$choice" == "q" ]]; then
+            echo "Aborting script."
+            echo ""
+            exit 0
+        else
+            echo "Invalid choice. Going back to main menu."
+            print_menu
+        fi
         ;;
     2) # Download...
         ;;
